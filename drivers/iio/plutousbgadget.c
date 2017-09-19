@@ -44,7 +44,7 @@
 #include <linux/usb/composite.h>
 #include <linux/err.h>
 
-#define DBGTRACE printk("in %s:%d\n", __FUNCTION__, __LINE__);
+#define DBGTRACE //printk("in %s:%d\n", __FUNCTION__, __LINE__);
 
 #define NUMBLK 8
 
@@ -489,6 +489,13 @@ static void work_func_cmd(struct work_struct *work){
                     break;
                 }
             }
+        }
+        break;
+        
+        case 0x06: // W rxtx fir coeff
+        {
+			struct ad9361_rf_phy *phy = iio_priv(mydata.ad9361_phydev);
+			phy->bin.write(0,&mydata.ad9361_phydev->dev.kobj, 0, reqdata, 0, strlen(reqdata));
         }
         break;
 
